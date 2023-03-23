@@ -19,7 +19,7 @@ fullnameOverride: ""
 enableDLNA: false
 
 service:
-  type: ClusterIP
+  type: LoadBalancer
   port: 8096
   ## Specify the nodePort value for the LoadBalancer and NodePort service types.
   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-nodeport
@@ -87,13 +87,17 @@ persistence:
     # subPath: some-subpath
     accessMode: ReadWriteOnce
     size: 10Gi
-  extraExistingClaimMounts: []
-    # - name: external-mount
-    #   mountPath: /srv/external-mount
+  extraExistingClaimMounts:
+     - name: movies
+       mountPath: /movies
     ## A manually managed Persistent Volume and Claim
     ## If defined, PVC must be created manually before volume will be bound
-    #   existingClaim:
-    #   readOnly: true
+       existingClaim: movies
+       readOnly: true
+     - name: tvseries
+       mountPath: /tvseries
+       existingClaim: tvseries
+       readOnly: true
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
